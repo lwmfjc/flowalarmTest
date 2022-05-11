@@ -14,9 +14,9 @@ public class FlowableConfig implements EngineConfigurationConfigurer<SpringProce
 
     @Override
     public void configure(SpringProcessEngineConfiguration engineConfiguration) {
-        engineConfiguration.setActivityFontName("宋体");
-        engineConfiguration.setLabelFontName("宋体");
-        engineConfiguration.setAnnotationFontName("宋体");
+        engineConfiguration.setActivityFontName("微软雅黑");
+        engineConfiguration.setLabelFontName("微软雅黑");
+        engineConfiguration.setAnnotationFontName("微软雅黑");
     }
 
 }

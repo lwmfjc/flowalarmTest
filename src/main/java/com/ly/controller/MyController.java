@@ -75,6 +75,18 @@ public class MyController {
 
         return arrayList;
     }
+    //查找所有的运行中的流程
+    @RequestMapping("findAllProcessRun")
+    public List<String> findAllProcessRun() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        List<ProcessInstance> list = runtimeService.createProcessInstanceQuery()
+                .list() ;
+        for (ProcessInstance processInstance : list) {
+            arrayList.add(processInstance.getName() + "==" + processInstance.getId());
+        }
+
+        return arrayList;
+    }
 
     @RequestMapping("getProcessDefine")
     public String getProcessDefine(@RequestParam("definedId") String definedId, HttpServletResponse response) {
