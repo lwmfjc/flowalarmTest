@@ -11,6 +11,11 @@ public class ExecutionEndListener implements ExecutionListener {
     private Logger logger=LoggerFactory.getLogger(ExecutionEndListener.class);
     @Override
     public void notify(DelegateExecution delegateExecution) {
-        logger.info("流程[{}]某任务结束\n",delegateExecution.getProcessInstanceId());
+        if(null == delegateExecution){
+            logger.info("参数为空，退出");
+        }else {
+            logger.info("流程[{}]某任务结束\n", delegateExecution.getProcessInstanceId
+                    ());
+        }
     }
 }

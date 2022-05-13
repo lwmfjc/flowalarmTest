@@ -33,6 +33,7 @@ public class TaskCompleteListener implements TaskListener {
             //执行具体业务
             iBusiService.execute(delegateTask);
         }
+        logger.info("任务处理人:{}--\n",delegateTask.getAssignee());
         logger.info("任务[id:{},name:{}]Complete\n",delegateTask.getId(),delegateTask.getName());
     }
     private void distribute(String mark){

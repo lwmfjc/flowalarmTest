@@ -1,5 +1,9 @@
 package com.ly.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.flowable.common.engine.impl.identity.Authentication;
+import org.flowable.editor.language.json.converter.BpmnJsonConverter;
 import org.flowable.engine.HistoryService;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
@@ -20,6 +24,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("flowable")
@@ -33,9 +38,16 @@ public class MyController {
     private HistoryService historyService;
     @Autowired
     private TaskService taskService;
+    @Autowired
+    protected ObjectMapper objectMapper;
 
     @GetMapping("/hello")
     public String hello() {
+
+          BpmnJsonConverter bpmnJsonConverter = new BpmnJsonConverter();
+          //return_initiator:6:e32d895b-d194-11ec-992f-28d0ea3a9c2a
+        //ObjectNode editorJsonNode = (ObjectNode) objectMapper.readTree(model.getModelEditorJson());
+         //bpmnJsonConverter.convertToBpmnModel(editorJsonNode );
         return "hello world!";
     }
 
@@ -120,8 +132,15 @@ public class MyController {
     //开启一个流程
     @RequestMapping("startProcess")
     public String startProcess(@RequestParam("deployId") String deployId) {
-        ProcessInstance processInstance = runtimeService.startProcessInstanceById(deployId);
+        String authStart=UUID.randomUUID().toString().substring(3,7);
+        Authentication.setAuthenticatedUserId(authStart);
+        System.out.printf("发起时的发起人为%s\n",authStart);
+        HashMap<String,Object> hashMap=new HashMap<>();
+        hashMap.put("INITIATOR",authStart);
+        ProcessInstance processInstance = runtimeService.startProcessInstanceById(deployId,hashMap);
         System.out.println("启动的流程id" + processInstance.getId());
+
+        Authentication.setAuthenticatedUserId(null);
         return processInstance.getId();
     }
 
